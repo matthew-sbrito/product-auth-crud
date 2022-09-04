@@ -1,16 +1,21 @@
 package com.techsolutio.products.dto.authentication;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techsolutio.products.domain.ApplicationUser;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class ApplicationUserDTO {
 
     private Long id;
     private String name;
     private String username;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private Date createAt;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private Date updateAt;
 
     private ApplicationUserDTO() { }
 
@@ -18,8 +23,8 @@ public class ApplicationUserDTO {
         this.id = id;
         this.name = name;
         this.username = username;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
+        this.createAt = Date.from(createAt.atZone(ZoneId.systemDefault()).toInstant());
+        this.updateAt = Date.from(updateAt.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public static ApplicationUserDTO fromDatabase(ApplicationUser applicationUser) {
@@ -44,11 +49,11 @@ public class ApplicationUserDTO {
         return username;
     }
 
-    public LocalDateTime getCreateAt() {
+    public Date getCreateAt() {
         return createAt;
     }
 
-    public LocalDateTime getUpdateAt() {
+    public Date getUpdateAt() {
         return updateAt;
     }
 }

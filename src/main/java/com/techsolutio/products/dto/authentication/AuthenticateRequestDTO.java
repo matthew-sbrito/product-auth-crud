@@ -1,6 +1,6 @@
 package com.techsolutio.products.dto.authentication;
 
-public class AuthenticateDTO {
+public class AuthenticateRequestDTO {
     private String username;
     private String password;
 

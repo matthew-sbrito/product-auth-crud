@@ -1,14 +1,36 @@
 package com.techsolutio.products.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.techsolutio.products.domain.Product;
+
+import java.time.ZoneId;
+import java.util.Date;
+
 public class ProductDTO {
     private Long id;
-    private String nome;
+    private String name;
     private String provider;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private Date createdAt;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private Date updatedAt;
 
-    public ProductDTO(Long id, String nome, String provider) {
+    public ProductDTO(Long id, String name, String provider, Date createdAt, Date updatedAt) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
         this.provider = provider;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public static ProductDTO fromDatabase(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getProvider(),
+                Date.from(product.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant()),
+                Date.from(product.getUpdatedAt().atZone(ZoneId.systemDefault()).toInstant())
+        );
     }
 
     public Long getId() {
@@ -19,12 +41,12 @@ public class ProductDTO {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getProvider() {
@@ -33,5 +55,13 @@ public class ProductDTO {
 
     public void setProvider(String provider) {
         this.provider = provider;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 }

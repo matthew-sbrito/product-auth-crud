@@ -14,7 +14,7 @@ public class HttpResponseException extends RuntimeException {
         this.message = message;
     }
 
-    public Integer getStatus() {
+    public Integer getStatusCode() {
         return httpStatus.value();
     }
 
