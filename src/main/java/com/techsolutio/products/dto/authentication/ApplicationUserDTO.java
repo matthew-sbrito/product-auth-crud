@@ -13,18 +13,18 @@ public class ApplicationUserDTO {
     private String name;
     private String username;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    private Date createAt;
+    private Date createdAt;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    private Date updateAt;
+    private Date updatedAt;
 
     private ApplicationUserDTO() { }
 
-    private ApplicationUserDTO(Long id, String name, String username, LocalDateTime createAt, LocalDateTime updateAt) {
+    private ApplicationUserDTO(Long id, String name, String username, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.username = username;
-        this.createAt = Date.from(createAt.atZone(ZoneId.systemDefault()).toInstant());
-        this.updateAt = Date.from(updateAt.atZone(ZoneId.systemDefault()).toInstant());
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public static ApplicationUserDTO fromDatabase(ApplicationUser applicationUser) {
@@ -32,8 +32,8 @@ public class ApplicationUserDTO {
                 applicationUser.getId(),
                 applicationUser.getName(),
                 applicationUser.getUsername(),
-                applicationUser.getCreatedAt(),
-                applicationUser.getUpdatedAt()
+                Date.from(applicationUser.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant()),
+                Date.from(applicationUser.getUpdatedAt().atZone(ZoneId.systemDefault()).toInstant())
         );
     }
 
@@ -49,11 +49,11 @@ public class ApplicationUserDTO {
         return username;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public Date getUpdateAt() {
-        return updateAt;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 }

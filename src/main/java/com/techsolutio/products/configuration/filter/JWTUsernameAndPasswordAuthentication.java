@@ -79,7 +79,6 @@ public class JWTUsernameAndPasswordAuthentication extends UsernamePasswordAuthen
 
         AuthenticateResponseDTO authenticateDTO = new AuthenticateResponseDTO();
 
-        authenticateDTO.setCreateIn(System.currentTimeMillis());
         authenticateDTO.setExpireIn(jwtConfiguration.getExpiration());
         authenticateDTO.setUser(ApplicationUserDTO.fromDatabase(user));
         authenticateDTO.setToken(token);

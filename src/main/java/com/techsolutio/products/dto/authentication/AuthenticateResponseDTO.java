@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Date;
 
 public class AuthenticateResponseDTO {
-    ApplicationUserDTO user;
-    String token;
-    long expireIn;
-    long createIn;
+    private ApplicationUserDTO user;
+    private String token;
+    private long expireIn;
+    private String type = "Bearer";
 
     public String toJson() throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(this);
@@ -39,11 +39,7 @@ public class AuthenticateResponseDTO {
         this.expireIn = expireIn;
     }
 
-    public long getCreateIn() {
-        return createIn;
-    }
-
-    public void setCreateIn(long createIn) {
-        this.createIn = createIn;
+    public String getType() {
+        return type;
     }
 }

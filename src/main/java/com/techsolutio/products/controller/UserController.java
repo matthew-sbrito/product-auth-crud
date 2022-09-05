@@ -22,7 +22,7 @@ public class UserController {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<ApplicationUserDTO> registerUser(@RequestBody ApplicationUserCreateDTO params) {
         log.info("Request for register user in application.");
 
