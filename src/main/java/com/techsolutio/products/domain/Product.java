@@ -11,6 +11,7 @@ public class Product {
     @Column
     private String name;
     @Column
+    private Double price;
     private String provider;
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -37,6 +38,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getProvider() {

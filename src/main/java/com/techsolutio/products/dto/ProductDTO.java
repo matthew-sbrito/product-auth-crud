@@ -9,15 +9,17 @@ import java.util.Date;
 public class ProductDTO {
     private Long id;
     private String name;
+    private Double price;
     private String provider;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date createdAt;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date updatedAt;
 
-    public ProductDTO(Long id, String name, String provider, Date createdAt, Date updatedAt) {
+    public ProductDTO(Long id, String name, Double price, String provider, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
+        this.price = price;
         this.provider = provider;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -27,6 +29,7 @@ public class ProductDTO {
         return new ProductDTO(
                 product.getId(),
                 product.getName(),
+                product.getPrice(),
                 product.getProvider(),
                 Date.from(product.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant()),
                 Date.from(product.getUpdatedAt().atZone(ZoneId.systemDefault()).toInstant())
@@ -47,6 +50,14 @@ public class ProductDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getProvider() {

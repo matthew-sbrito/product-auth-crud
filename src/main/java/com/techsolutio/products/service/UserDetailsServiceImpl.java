@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -52,6 +54,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public ApplicationUserDTO create(ApplicationUserCreateDTO params) {
         log.info("Creating user with username '{}'.", params.getUsername());
+
+         Optional<ApplicationUser> userExists = applicationUserRepository.findByUsername(params.getUsername());
+
+        if(userExists.isPresent()) {
+            throw new HttpResponseException(HttpStatus.BAD_REQUEST, "Este usuário já existe!");
+        }
 
         ApplicationUser user = new ApplicationUser();
 

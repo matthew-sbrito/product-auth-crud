@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,6 +58,16 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public WebMvcConfigurer CORSConfigure() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**");
+            }
+        };
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         JWTUsernameAndPasswordAuthentication filterGenerateJWT = new JWTUsernameAndPasswordAuthentication(
                 jwtUtility, jwtConfiguration, authenticationManager()
@@ -67,8 +79,7 @@ public class SecurityConfiguration {
 
         http
                 .csrf().disable()
-                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
-                .and().sessionManagement()
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().exceptionHandling()
                 .authenticationEntryPoint(((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))

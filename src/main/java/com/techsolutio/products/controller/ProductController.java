@@ -5,11 +5,12 @@ import com.techsolutio.products.service.ProductService;
 import com.techsolutio.products.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/product")
@@ -25,10 +26,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> findProductList() {
+    public ResponseEntity<Page<ProductDTO>> findProductList(
+            @PageableDefault Pageable pageable
+    ) {
         log.info("Request find product list.");
 
-        return ResponseEntity.ok(productService.list());
+        return ResponseEntity.ok(productService.list(pageable));
     }
 
     @PostMapping
@@ -50,5 +53,14 @@ public class ProductController {
         log.info("Request update product by user '{}'.", userDetailsService.getLoggedUser().getUsername());
 
         return ResponseEntity.ok(productService.update(id, params));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long id) {
+        log.info("Request delete product by user '{}'.", userDetailsService.getLoggedUser().getUsername());
+
+        productService.delete(id);
+
+        return ResponseEntity.ok().build();
     }
 }
