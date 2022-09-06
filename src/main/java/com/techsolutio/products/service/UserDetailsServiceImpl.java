@@ -8,15 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -83,6 +82,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         ApplicationUser user = findById(id);
 
+        if(!Objects.equals(user.getUsername(), params.getUsername())) {
+            Optional<ApplicationUser> userExists = applicationUserRepository.findByUsername(params.getUsername());
+
+            if(userExists.isPresent()) {
+                throw new HttpResponseException(HttpStatus.BAD_REQUEST, "Este usuário já existe!");
+            }
+        }
+
         user.setName(params.getName());
         user.setUsername(params.getUsername());
 
@@ -103,7 +110,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         ApplicationUser user = findById(id);
 
         if (!passwordEncoder.matches(params.getOldPassword(), user.getPassword())) {
-            throw new HttpResponseException(HttpStatus.UNAUTHORIZED, "Invalid credentials.");
+            throw new HttpResponseException(HttpStatus.UNAUTHORIZED, "Credênciais inválidas.");
         }
 
         try {

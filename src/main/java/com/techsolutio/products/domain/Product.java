@@ -8,10 +8,11 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(nullable = false)
     private String name;
-    @Column
+    @Column(nullable = false)
     private Double price;
+    @Column(nullable = false)
     private String provider;
     @Column(updatable = false)
     private LocalDateTime createdAt;
