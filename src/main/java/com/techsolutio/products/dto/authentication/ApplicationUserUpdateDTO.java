@@ -4,6 +4,7 @@ public class ApplicationUserUpdateDTO {
     private String name;
     private String username;
 
+
     public String getName() {
         return name;
     }
